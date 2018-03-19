@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+int* mergeSort(int*, int);
+
+int main()
+{   int i;
+    int* rez;
+    int* array = (int*)malloc(sizeof(int)*9);
+    array[0] = 1; array[1] = 9; array[2] = 8; array[3] = 6; array[4] = -5; array[5] = 5; array[6] = 1; array[7] = 3; array[8] = 0;
+    rez = mergeSort(array, 5);
+    for ( i = 0; i < 5 ; i++)
+        printf(" %i", rez[i]);
+
+    return 0;
+}
+
+
+
+int* merge(int* leftArray, int* rightArray, int n, int m){
+
+    int i, j , k;
+    int* finalArray = (int*)malloc(sizeof(int)* (n + m) + 1);
+    i =0;
+    j =0;
+    k =0;
+
+    while(i < n && j < m){
+
+        if (leftArray[i] < rightArray[j]){
+            finalArray[k] = leftArray[i];
+            i++;
+            k++;
+
+        }
+        else{
+
+            finalArray[k] = rightArray[j];
+            j++;
+            k++;
+        }
+
+
+    }
+    while (i<n){
+
+        finalArray[k] = leftArray[i];
+        i++;
+        k++;
+
+    }
+
+    while (j<m){
+
+        finalArray[k] = rightArray[j];
+        j++;
+        k++;
+
+    }
+
+    free(leftArray);
+    free(rightArray);
+    return finalArray;
+
+
+}
+
+int* mergeSort(int* array, int len){
+
+    int mid, i, k;
+    if ( len <= 1 ){
+
+            return array;
+
+    }
+
+    int* leftArray = (int*)malloc(sizeof(int) * (int)(len/2));
+    int* rightArray = (int*)malloc(sizeof(int) * (int)(len/2));
+    mid = (int)(len/2);
+    k = 0;
+    for (i = 0; i < mid; i++){
+
+        leftArray[k] = array[i];
+        k ++;
+
+    }
+    k = 0;
+      for (i = mid; i< len; i++){
+
+        rightArray[k] = array[i];
+        k++;
+    }
+    leftArray = mergeSort(leftArray, mid);
+    rightArray = mergeSort(rightArray, len-mid);
+
+    return merge(leftArray, rightArray,  mid, len-mid);
+
+
+}
